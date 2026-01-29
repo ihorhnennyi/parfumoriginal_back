@@ -12,13 +12,14 @@ import { OrdersModule } from '../modules/orders/orders.module';
 import databaseConfig from '../config/database.config';
 import appConfig from '../config/app.config';
 import jwtConfig from '../config/jwt.config';
+import adminConfig from '../config/admin.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [databaseConfig, appConfig, jwtConfig],
+      load: [databaseConfig, appConfig, jwtConfig, adminConfig],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

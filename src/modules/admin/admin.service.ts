@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
 import { Admin, AdminDocument } from './schemas/admin.schema';
 import {
   NotFoundException,
@@ -15,6 +16,7 @@ export class AdminService implements OnModuleInit {
   constructor(
     @InjectModel(Admin.name) private adminModel: Model<AdminDocument>,
     private tokenService: TokenService,
+    private configService: ConfigService,
   ) {}
 
   async onModuleInit() {
@@ -23,8 +25,8 @@ export class AdminService implements OnModuleInit {
 
   
   private async initializeAdmin() {
-    const adminEmail = 'ihorhnennyi@gmail.com';
-    const adminPassword = '123456789';
+    const adminEmail = this.configService.get<string>('admin.email');
+    const adminPassword = this.configService.get<string>('admin.password');
 
     const existingAdmin = await this.adminModel
       .findOne({ email: adminEmail })
